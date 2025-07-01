@@ -19,7 +19,7 @@ if (!params.reference_fa) error "Please specify --reference_fa"
 log.info """\
         NANOPORE RNA-SEQ ANALYSIS PIPELINE
         ===================================
-        pod5_dir        : ${params.pod5_dir}
+pod5_dir        : ${params.pod5_dir}
 reference_fa    : ${params.reference_fa}
 bam_file        : ${params.bam_file}
 outdir          : ${params.outdir}
