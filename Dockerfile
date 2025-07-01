@@ -10,6 +10,11 @@ RUN apt-get update && apt-get install -y \
         build-essential \
         && rm -rf /var/lib/apt/lists/*
 
+RUN apt install -y openjdk-17-jdk
+RUN curl -s https://get.nextflow.io | bash
+RUN chmod +x nextflow
+RUN mv nextflow /usr/local/bin/
+
 USER root
 
 RUN wget https://cdn.oxfordnanoportal.com/software/analysis/dorado-1.0.2-linux-x64.tar.gz -O /tmp/dorado.tar.gz && \
@@ -18,6 +23,7 @@ tar -xzf /tmp/dorado.tar.gz -C /opt && \
 mv /opt/dorado-1.0.2-linux-x64 /opt/dorado && \
 ln -s /opt/dorado/bin/dorado /usr/local/bin/dorado && \
 rm /tmp/dorado.tar.gz
+
 
 USER $MAMBA_USER
 
