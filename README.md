@@ -21,3 +21,5 @@ modkit validate \
   --log-filepath merged_validation.log \
   -o merged_validation_results.tsv
 ```
+
+<img width="704" height="685" alt="image" src="https://github.com/user-attachments/assets/e8881086-5656-4e99-8f23-f5d3f88fb102" />
