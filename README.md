@@ -23,3 +23,31 @@ modkit validate \
 ```
 
 <img width="704" height="685" alt="image" src="https://github.com/user-attachments/assets/e8881086-5656-4e99-8f23-f5d3f88fb102" />
+
+## EPI2ME Nextflow Workflow: epi2me-labs/wf-basecalling
+
+In `--input` is the directory where your `pod5` file is located. The code works by filter all the files with the extension `.pod5 `. Seperate the `pod5` files for seperate basecalling.
+
+```
+nextflow run epi2me-labs/wf-basecalling -c custom.config -w /tmp/work --input ./ --ref ./reference/drach_context_strands.fa --basecaller_cfg rna004_130bps_sup@v5.2.0 --remora_cfg rna004_130bps_sup@v5.2.0_m6A_DRACH@v1 --output_fmt bam
+```
+`--output_fmt bam` flag directs the command to make `bam` file rather than `cram` file by default. Which is alternative to `bam`.
+<img width="918" height="779" alt="image" src="https://github.com/user-attachments/assets/e203b82f-ef5b-4a49-8501-1f5ce65c8ce2" />
+
+After the nextflow is run successfully resulting `SAMPLE.pass.bam` will be in the `./output` directory by default. Validate the basecall by 
+```
+modkit validate --bam-and-bed SAMPLE.pass.bam drach_context_m6A_sites.bed
+```
+
+<img width="926" height="820" alt="image" src="https://github.com/user-attachments/assets/ef129f97-345e-4965-865d-facbd2604db2" />
+
+EPI2ME report summary:
+
+<img width="1591" height="895" alt="image" src="https://github.com/user-attachments/assets/692987f1-a81c-4719-82c6-4fea933348eb" />
+
+
+Nextflow io provides execution timeline breakdown:
+
+<img width="1888" height="788" alt="image" src="https://github.com/user-attachments/assets/ffdd7f79-9a08-4868-b240-36c81215d228" />
+
+
