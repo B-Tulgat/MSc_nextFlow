@@ -29,7 +29,14 @@ modkit validate \
 In `--input` is the directory where your `pod5` file is located. The code works by filter all the files with the extension `.pod5 `. Seperate the `pod5` files for seperate basecalling.
 
 ```
-nextflow run epi2me-labs/wf-basecalling -c custom.config -w /tmp/work --input ./ --ref ./reference/drach_context_strands.fa --basecaller_cfg rna004_130bps_sup@v5.2.0 --remora_cfg rna004_130bps_sup@v5.2.0_m6A_DRACH@v1 --output_fmt bam
+nextflow run epi2me-labs/wf-basecalling \
+  -c custom.config \
+  -w /tmp/work \
+  --input ./
+  --ref ./reference/drach_context_strands.fa \
+  --basecaller_cfg rna004_130bps_sup@v5.2.0 \
+  --remora_cfg rna004_130bps_sup@v5.2.0_m6A_DRACH@v1 \
+  --output_fmt bam
 ```
 `--output_fmt bam` flag directs the command to make `bam` file rather than `cram` file by default. Which is alternative to `bam`.
 <img width="918" height="779" alt="image" src="https://github.com/user-attachments/assets/e203b82f-ef5b-4a49-8501-1f5ce65c8ce2" />
