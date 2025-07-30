@@ -32,7 +32,7 @@ In `--input` is the directory where your `pod5` file is located. The code works 
 nextflow run epi2me-labs/wf-basecalling \
   -c custom.config \
   -w /tmp/work \
-  --input ./
+  --input ./ \
   --ref ./reference/drach_context_strands.fa \
   --basecaller_cfg rna004_130bps_sup@v5.2.0 \
   --remora_cfg rna004_130bps_sup@v5.2.0_m6A_DRACH@v1 \
