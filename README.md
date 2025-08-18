@@ -57,4 +57,6 @@ Nextflow io provides execution timeline breakdown:
 
 <img width="1888" height="788" alt="image" src="https://github.com/user-attachments/assets/ffdd7f79-9a08-4868-b240-36c81215d228" />
 
+The resulting bed file from 'modkit pileup' is not compatibly with the IGV visualizer. Therefore do the following command to make it compatible:
 
+`awk 'BEGIN{OFS="\t"} {print $1, $2, $3, $4, $11, $6}' out.bed > igv_ready.bed`
