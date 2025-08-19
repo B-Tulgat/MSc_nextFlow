@@ -1,0 +1,2 @@
+dorado,1.0.2+c758d2f6
+minimap2,2.28-r1209

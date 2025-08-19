@@ -1,0 +1,10 @@
+{
+    "reference": {
+        "id": "ref",
+        "name": "ref",
+        "wholeGenomeView": false,
+        "fastaURL": "/home/amon/epitome/reference/drach_context_strands.fa",
+        "indexURL": "drach_context_strands.fa.fai"
+    },
+    "tracks": []
+}
