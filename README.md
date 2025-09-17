@@ -3,6 +3,11 @@ Requisite:
 - docker
 - nextflow (java)
 
+Build `nanopore:latest` image with:
+```bash
+docker build -t .
+```
+
 Download example pod5 file from [https://epi2me.nanoporetech.com/rna-mod-validation-data] with the following command:
 ```bash
 aws s3 cp  s3://ont-open-data/rna-modbase-validation_2025.03/subset/m6A_DRACH.pod5 . --no-sign-request
