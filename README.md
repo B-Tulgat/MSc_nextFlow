@@ -5,7 +5,7 @@ Requisite:
 
 Build `nanopore:latest` image with:
 ```bash
-docker build -t .
+docker build -t nanopore:latest .
 ```
 
 Download example pod5 file from [https://epi2me.nanoporetech.com/rna-mod-validation-data] with the following command:
