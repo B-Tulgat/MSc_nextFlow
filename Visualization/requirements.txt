@@ -1,5 +1,6 @@
 numpy==2.2.6
 pandas==2.3.3
+pod5==0.3.28
 matplotlib==3.10.6
 seaborn==0.13.2
 scikit-learn==1.7.2

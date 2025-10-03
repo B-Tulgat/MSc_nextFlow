@@ -1,7 +1,12 @@
-Requisite:
-- aws cli
-- docker
-- nextflow (java)
+
+
+## Setup
+Requirements:
+- aws cli ([https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html])
+- docker ([https://docs.docker.com/engine/install])
+- nextflow ([https://www.nextflow.io/docs/latest/install.html])
+
+
 
 Build `nanopore:latest` image with:
 ```bash
@@ -12,16 +17,16 @@ Download example pod5 file from [https://epi2me.nanoporetech.com/rna-mod-validat
 ```bash
 aws s3 cp  s3://ont-open-data/rna-modbase-validation_2025.03/subset/m6A_DRACH.pod5 . --no-sign-request
 ```
-![image](https://github.com/user-attachments/assets/68d822af-523b-4890-8408-eff29babf3e0)
-![image](https://github.com/user-attachments/assets/1a4bd377-4275-4ecf-b9f2-6e2410133310)
 
-Simple run example:
+## Simple run example:
 ```
 nextflow pod5_bed.nf --with-docker
 ```
 
+![image](https://github.com/user-attachments/assets/68d822af-523b-4890-8408-eff29babf3e0)
+![image](https://github.com/user-attachments/assets/1a4bd377-4275-4ecf-b9f2-6e2410133310)
 
-Confusion matrix:
+## Modkit validate
 
 Download the necessary reference ground truth files:
 ```
@@ -57,7 +62,7 @@ nextflow run epi2me-labs/wf-basecalling \
 `--output_fmt bam` flag directs the command to make `bam` file rather than `cram` file by default. Which is alternative to `bam`.
 <img width="918" height="779" alt="image" src="https://github.com/user-attachments/assets/e203b82f-ef5b-4a49-8501-1f5ce65c8ce2" />
 
-After the nextflow is run successfully resulting `SAMPLE.pass.bam` will be in the `./output` directory by default. Validate the basecall by 
+After the nextflow is run successfully resulting `SAMPLE.pass.bam` will be in the `./output` directory by default. Validate the basecall by
 ```
 modkit validate --bam-and-bed SAMPLE.pass.bam drach_context_m6A_sites.bed
 ```

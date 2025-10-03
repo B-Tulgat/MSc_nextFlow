@@ -9,5 +9,6 @@ Requirements:
     - seaborn
     - numpy
     - pandas
+    - pod5
     - matplotlib
     - biopython
