@@ -4,7 +4,7 @@ This guide demonstrates how our **custom Nextflow pipeline** reproduce the accur
 
 ---
 
-## ⚙️ Setup
+## Setup
 
 ### Requirements
 
@@ -16,7 +16,7 @@ Make sure the following tools are installed:
 
 ---
 
-### Build the Docker Image
+### Build the Docker Image for Container that the Nextflow Workflow Processes
 
 ```bash
 docker build -t nanopore:latest .
@@ -102,7 +102,6 @@ nextflow run epi2me-labs/wf-basecalling \
 > `--output_fmt bam` ensures BAM output (instead of the default CRAM).
 
 <p align="center">
-
   <img src="https://github.com/user-attachments/assets/e203b82f-ef5b-4a49-8501-1f5ce65c8ce2" width="70%">
 </p>
 
@@ -117,33 +116,33 @@ modkit validate --bam-and-bed SAMPLE.pass.bam drach_context_m6A_sites.bed
 
 ## Comparison between the EPI2ME-workflow and Custom-Workflow
 
-<p align="center">
-  <figure style="display:inline-block; text-align:center; margin:10px; width:41%;">
-    <img src="https://github.com/user-attachments/assets/e8881086-5656-4e99-8f23-f5d3f88fb102" width="100%">
-    <figcaption><b>Custom 99.51% Filtered Accuracy</b></figcaption>
-  </figure>
-  <figure style="display:inline-block; text-align:center; margin:10px; width:45%;">
-    <img src="https://github.com/user-attachments/assets/ef129f97-345e-4965-865d-facbd2604db2" width="100%">
-    <figcaption><b>EPI2ME 99.55% Filtered Accuracy</b></figcaption>
-  </figure>
-</p>
----
+<table>
+  <tr>
+    <td align="center" width="45.8%">
+      <img src="https://github.com/user-attachments/assets/e8881086-5656-4e99-8f23-f5d3f88fb102" width="100%">
+      <br><b>Custom 99.51% Filtered Accuracy</b>
+    </td>
+    <td align="center" width="50%">
+      <img src="https://github.com/user-attachments/assets/ef129f97-345e-4965-865d-facbd2604db2" width="100%">
+      <br><b>EPI2ME 99.55% Filtered Accuracy</b>
+    </td>
+  </tr>
+</table>
+
 
 ## EPI2ME Report Summary
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/692987f1-a81c-4719-82c6-4fea933348eb" width="90%">
+  <img src="https://github.com/user-attachments/assets/692987f1-a81c-4719-82c6-4fea933348eb" width="80%">
 </p>
 
----
 
 ## Nextflow Execution Timeline
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/ffdd7f79-9a08-4868-b240-36c81215d228" width="90%">
+  <img src="https://github.com/user-attachments/assets/ffdd7f79-9a08-4868-b240-36c81215d228" width="80%">
 </p>
 
----
 
 ## IGV Compatibility Fix
 
@@ -156,7 +155,7 @@ awk 'BEGIN{OFS="\t"} {print $1, $2, $3, $4, $11, $6}' out.bed > igv_ready.bed
 
 ---
 
-## 📈 Results Summary
+## Results Summary
 
 We successfully **reproduced the official EPI2ME results** using a simplified custom workflow, achieving comparable performance:
 
