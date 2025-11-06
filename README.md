@@ -12,7 +12,7 @@ A concise, reproducible Nextflow pipeline that reproduces the EPI2ME basecalling
 ## Table of contents
 
 * [Quick summary](#quick-summary)
-* [Repository layout](#repository-layout)
+* [Repository](#repository)
 * [Requirements](#requirements)
 * [Quickstart (run the pipeline)](#quickstart-run-the-pipeline)
 * [Running validation (Modkit)](#running-validation-modkit)
@@ -183,8 +183,8 @@ We include two Jupyter notebooks that demonstrate how to visualize results and p
 * `Visualization/Pod5_Visualization.ipynb` — nanopore picoampere signal visualization + metadata.
 
 <img width="1335" height="409" alt="image" src="https://github.com/user-attachments/assets/d3707d01-8ef8-461e-a644-93878ff40d24" />
+<img width="1200" height="400" alt="image" src="https://github.com/user-attachments/assets/923c98ae-59e3-47bd-9751-27418b352780" />
 
-<img width="1200" height="400" alt="image" src="https://github.com/user-attachments/assets/83fbad94-5f22-4f22-b817-7e30b064fabc" />
 
 
 
