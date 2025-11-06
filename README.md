@@ -82,8 +82,7 @@ nextflow run pod5_bed.nf --with-docker
 ```
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/68d822af-523b-4890-8408-eff29babf3e0" width="42.5%">
-  <img src="https://github.com/user-attachments/assets/1a4bd377-4275-4ecf-b9f2-6e2410133310" width="45%">
+  <img alt="image" src="https://github.com/user-attachments/assets/7ae9d3de-c6a0-49d4-86df-34e7b3cead86" width="60%" />
 </p>
 
 
