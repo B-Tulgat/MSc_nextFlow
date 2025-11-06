@@ -4,7 +4,7 @@
 
 A concise, reproducible Nextflow pipeline that reproduces the EPI2ME basecalling workflow's m6A detection accuracy in DRACH motifs using **Dorado + Remora** and **Modkit** for validation. This repository contains the pipeline, example data downloads, visualization notebooks, and validation scripts.
 
-<img width="769" height="775" alt="image" src="https://github.com/user-attachments/assets/7ae9d3de-c6a0-49d4-86df-34e7b3cead86" width="70%" />
+<img width="769" height="775" alt="image" src="https://github.com/user-attachments/assets/7ae9d3de-c6a0-49d4-86df-34e7b3cead86" width="50%" />
 
 
 ---
