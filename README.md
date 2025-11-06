@@ -4,21 +4,8 @@
 
 A concise, reproducible Nextflow pipeline that reproduces the EPI2ME basecalling workflow's m6A detection accuracy in DRACH motifs using **Dorado + Remora** and **Modkit** for validation. This repository contains the pipeline, example data downloads, visualization notebooks, and validation scripts.
 
-<img width="769" height="775" alt="image" src="https://github.com/user-attachments/assets/7ae9d3de-c6a0-49d4-86df-34e7b3cead86" />
+<img width="769" height="775" alt="image" src="https://github.com/user-attachments/assets/7ae9d3de-c6a0-49d4-86df-34e7b3cead86" width="70%" />
 
-
----
-
-## Table of contents
-
-* [Quick summary](#quick-summary)
-* [Repository](#repository)
-* [Requirements](#requirements)
-* [Quickstart (run the pipeline)](#quickstart-run-the-pipeline)
-* [Running validation (Modkit)](#running-validation-modkit)
-* [Visualization notebooks](#visualization-notebooks)
-* [IGV compatibility fix](#igv-compatibility-fix)
-* [Results summary](#results-summary)
 
 ---
 
@@ -69,9 +56,9 @@ Install these before running the pipeline:
 
 ---
 
-## Quickstart — run the pipeline
+## Quickstart
 
-Build the image used by Nextflow (if your workflow uses the local `Dockerfile`):
+Build the image used by Nextflow:
 
 ```bash
 docker build -t nanopore:latest .
@@ -100,7 +87,7 @@ nextflow run pod5_bed.nf --with-docker
 </p>
 
 
-If you use the `epi2me-labs/wf-basecalling` workflow (EPI2ME Nextflow workflow) the command below demonstrates a typical invocation that produces BAM output:
+Example `epi2me-labs/wf-basecalling` workflow (EPI2ME Nextflow workflow) that produces BAM output:
 
 ```bash
 nextflow run epi2me-labs/wf-basecalling \
