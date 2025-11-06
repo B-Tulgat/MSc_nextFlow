@@ -1,22 +1,77 @@
-# ONT DRS Remora Pipeline Setup and Validation
+# ONT DRS Remora Pipeline
 
-This guide demonstrates how our **custom Nextflow pipeline** reproduce the accuracy rate reported running the **official EPI2ME basecalling workflow** for N6-Methyladenosine (m6A) detection on DRACH motifs within oligonucleotides using **Modkit**.
 
----
 
-## Setup
+A concise, reproducible Nextflow pipeline that reproduces the EPI2ME basecalling workflow's m6A detection accuracy in DRACH motifs using **Dorado + Remora** and **Modkit** for validation. This repository contains the pipeline, example data downloads, visualization notebooks, and validation scripts.
 
-### Requirements
+<img width="769" height="775" alt="image" src="https://github.com/user-attachments/assets/7ae9d3de-c6a0-49d4-86df-34e7b3cead86" />
 
-Make sure the following tools are installed:
-
-* [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
-* [Docker](https://docs.docker.com/engine/install)
-* [Nextflow](https://www.nextflow.io/docs/latest/install.html)
 
 ---
 
-### Build the Docker Image for Container that the Nextflow Workflow Processes
+## Table of contents
+
+* [Quick summary](#quick-summary)
+* [Repository layout](#repository-layout)
+* [Requirements](#requirements)
+* [Quickstart (run the pipeline)](#quickstart-run-the-pipeline)
+* [Running validation (Modkit)](#running-validation-modkit)
+* [Visualization notebooks](#visualization-notebooks)
+* [IGV compatibility fix](#igv-compatibility-fix)
+* [Results summary](#results-summary)
+
+---
+
+## Quick summary
+
+This pipeline accepts a `.pod5` file as input and produces a `pod5_bed.nf` result that contains detected m6A calls in BED-like format. The minimal flow is:
+
+```
+raw POD5 (input) -> Dorado + Remora -> BAM -> modkit pileup -> BED (output)
+```
+
+Paths used in examples throughout this README:
+
+* `/pod5` — place or download your `.pod5` here
+* `/outdir` — where `pod5_bed.nf` emits the `pod5_bed.nf` result and other outputs
+* `/reference` — FASTA reference(s)
+
+---
+
+## Repository
+
+```
+/                       <- repo root
+├─ pod5_bed.nf          <- Nextflow pipeline
+├─ custom.config        <- nextflow config for running EPI2ME workflow
+├─ reference/           <- place reference FASTA here for EPI2ME workflow
+├─ pod5/                <- example pod5 files
+├─ outdir/              <- pipeline outputs (BAMs, BEDs, logs)
+├─ wf-basecalling out-dir/    <- pipeline outputs (BAMs, Execution Timeline, logs)
+├─ Visualization/
+│  ├─ BED_Visualization.ipynb
+│  └─ Pod5_Visualization.ipynb
+└─ README.md
+```
+
+---
+
+## Requirements
+
+Install these before running the pipeline:
+
+* `Nextflow` (tested with `nextflow` latest stable)
+* `Docker` (or modify pipeline for Singularity/Podman)
+* `AWS CLI` (for fetching the example data in this README using `--no-sign-request`)
+* `modkit` (for validation — see Modkit docs for install instructions)
+
+> Tip: use a single `Dockerfile` with pinned tool versions so results are reproducible.
+
+---
+
+## Quickstart — run the pipeline
+
+Build the image used by Nextflow (if your workflow uses the local `Dockerfile`):
 
 ```bash
 docker build -t nanopore:latest .
@@ -24,27 +79,16 @@ docker build -t nanopore:latest .
 
 ---
 
-### Download Example Data
+### Example data downloads
 
-#### Example POD5 file
-
-```bash
-aws s3 cp s3://ont-open-data/rna-modbase-validation_2025.03/subset/m6A_DRACH.pod5 . --no-sign-request
-```
-
-#### Reference file
+Download the example `.pod5` and reference used for the validation in this repo. These commands use the public ONT S3 bucket (no credentials required):
 
 ```bash
-aws s3 cp s3://ont-open-data/rna-modbase-validation_2025.03/references/drach_context_strands.fa . --no-sign-request
+aws s3 cp s3://ont-open-data/rna-modbase-validation_2025.03/subset/m6A_DRACH.pod5 ./pod5 --no-sign-request
+aws s3 cp s3://ont-open-data/rna-modbase-validation_2025.03/references/drach_context_strands.fa ./reference --no-sign-request
 ```
 
-> **Note:**
-> For EPI2ME workflows, place the reference file inside the `reference/` directory.
-> For the **custom workflow**, proceed directly with the above download command.
-
----
-
-## Running the pipeline
+Run Nextflow (example):
 
 ```bash
 nextflow run pod5_bed.nf --with-docker
@@ -55,20 +99,45 @@ nextflow run pod5_bed.nf --with-docker
   <img src="https://github.com/user-attachments/assets/1a4bd377-4275-4ecf-b9f2-6e2410133310" width="45%">
 </p>
 
----
 
-## Modkit Validation
-
-### Download Ground Truth Files
+If you use the `epi2me-labs/wf-basecalling` workflow (EPI2ME Nextflow workflow) the command below demonstrates a typical invocation that produces BAM output:
 
 ```bash
-aws s3 cp s3://ont-open-data/rna-modbase-validation_2025.03/references/drach_context_A_sites.bed . --no-sign-request
-aws s3 cp s3://ont-open-data/rna-modbase-validation_2025.03/references/drach_context_m6A_sites.bed . --no-sign-request
+nextflow run epi2me-labs/wf-basecalling \
+  -c custom.config \
+  -w /tmp/work \
+  --input ./pod5 \
+  --ref ./reference/drach_context_strands.fa \
+  --basecaller_cfg rna004_130bps_sup@v5.2.0 \
+  --remora_cfg rna004_130bps_sup@v5.2.0_m6A_DRACH@v1 \
+  --output_fmt bam
 ```
 
-### Validate Results
+> Use `--output_fmt bam` to ensure BAM (not CRAM) is produced.
 
-We have the resulting BAM file `m6A_detected_sorted.bam` from `m6A_DRACH.pod5`.
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/e203b82f-ef5b-4a49-8501-1f5ce65c8ce2" width="70%">
+</p>
+
+## Output locations
+
+* `./wf-basecalling out-dir/SAMPLE.pass.bam` (when using epi2me workfow)
+* `outdir/` (when using the custom `pod5_bed.nf` pipeline)
+
+
+
+---
+
+## Running validation (Modkit)
+
+Download ground truth BED files used in the validation:
+
+```bash
+aws s3 cp s3://ont-open-data/rna-modbase-validation_2025.03/references/drach_context_A_sites.bed ./reference --no-sign-request
+aws s3 cp s3://ont-open-data/rna-modbase-validation_2025.03/references/drach_context_m6A_sites.bed ./reference --no-sign-request
+```
+
+Assuming you have `m6A_detected_sorted.bam` from the pipeline, validate with Modkit:
 
 ```bash
 modkit validate \
@@ -77,37 +146,12 @@ modkit validate \
   -o merged_validation_results.tsv
 ```
 
+The TSV produced (`merged_validation_results.tsv`) contains the metrics compared to the ground truth.
+
 <p align="center">
   <img src="https://github.com/user-attachments/assets/e8881086-5656-4e99-8f23-f5d3f88fb102" width="45%">
 </p>
 
----
-
-## EPI2ME Nextflow Workflow: `epi2me-labs/wf-basecalling`
-
-In the `--input` argument, specify the directory containing your `.pod5` files.
-Each `.pod5` file will be processed separately.
-
-```bash
-nextflow run epi2me-labs/wf-basecalling \
-  -c custom.config \
-  -w /tmp/work \
-  --input ./ \
-  --ref ./reference/drach_context_strands.fa \
-  --basecaller_cfg rna004_130bps_sup@v5.2.0 \
-  --remora_cfg rna004_130bps_sup@v5.2.0_m6A_DRACH@v1 \
-  --output_fmt bam
-```
-
-> `--output_fmt bam` ensures BAM output (instead of the default CRAM).
-
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/e203b82f-ef5b-4a49-8501-1f5ce65c8ce2" width="70%">
-</p>
-
-After successful execution, the resulting file `SAMPLE.pass.bam` will be located in `./output/`.
-
-Validate the basecall:
 
 ```bash
 modkit validate --bam-and-bed SAMPLE.pass.bam drach_context_m6A_sites.bed
@@ -129,6 +173,40 @@ modkit validate --bam-and-bed SAMPLE.pass.bam drach_context_m6A_sites.bed
   </tr>
 </table>
 
+---
+
+## Visualization notebooks
+
+We include two Jupyter notebooks that demonstrate how to visualize results and pod5 signals:
+
+* `Visualization/BED_Visualization.ipynb` — shows how to render modkit BED-style outputs into PNG/figures.
+* `Visualization/Pod5_Visualization.ipynb` — nanopore picoampere signal visualization + metadata.
+
+<img width="1335" height="409" alt="image" src="https://github.com/user-attachments/assets/d3707d01-8ef8-461e-a644-93878ff40d24" />
+
+<img width="1200" height="400" alt="image" src="https://github.com/user-attachments/assets/83fbad94-5f22-4f22-b817-7e30b064fabc" />
+
+
+
+---
+
+## IGV compatibility fix
+
+`modkit pileup` produces a bed-like file that IGV may not read directly. Convert it with this `awk` one-liner:
+
+```bash
+awk 'BEGIN{OFS="\t"} {print $1, $2, $3, $4, $11, $6}' out.bed > igv_ready.bed
+```
+
+---
+
+
+
+These numbers were produced using the dataset in `rna-modbase-validation_2025.03` and validated with Modkit.
+
+---
+
+
 
 ## EPI2ME Report Summary
 
@@ -142,27 +220,4 @@ modkit validate --bam-and-bed SAMPLE.pass.bam drach_context_m6A_sites.bed
 <p align="center">
   <img src="https://github.com/user-attachments/assets/ffdd7f79-9a08-4868-b240-36c81215d228" width="80%">
 </p>
-
-
-## IGV Compatibility Fix
-
-The BED file from `modkit pileup` is **not directly compatible** with IGV.
-Run the following command to convert it into a compatible format:
-
-```bash
-awk 'BEGIN{OFS="\t"} {print $1, $2, $3, $4, $11, $6}' out.bed > igv_ready.bed
-```
-
----
-
-## Results Summary
-
-We successfully **reproduced the official EPI2ME results** using a simplified custom workflow, achieving comparable performance:
-
-| Workflow        | Accuracy (%) |
-| --------------- | ------------ |
-| Official EPI2ME | **99.55**    |
-| Custom Workflow | **99.51**    |
-
----
 
