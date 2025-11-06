@@ -83,10 +83,6 @@ Run Nextflow (example):
 nextflow run pod5_bed.nf --with-docker
 ```
 
-<p align="center">
-  <img alt="image" src="https://github.com/user-attachments/assets/7ae9d3de-c6a0-49d4-86df-34e7b3cead86" width="60%" />
-</p>
-
 
 Example `epi2me-labs/wf-basecalling` workflow (EPI2ME Nextflow workflow) that produces BAM output:
 
